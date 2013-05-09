@@ -18,26 +18,8 @@
 // SE Chat Reply Highlight was used as a template for this userscript.
 // http://github.com/oliversalzburg/se-chat-reply-highlight/
 
-// jQuery loading from http://erikvold.com/blog/index.cfm/2010/6/14/using-jquery-with-a-user-script
-function addJQuery( callback, jqVersion ) {
-    jqVersion = jqVersion || "1.8.3";
-    var D = document;
-    var target = D.getElementsByTagName( "head" )[ 0 ] || D.body || D.documentElement;
-    var scriptNode = D.createElement( "script" );
-    scriptNode.src = "//ajax.googleapis.com/ajax/libs/jquery/" + jqVersion + "/jquery.min.js";
-    scriptNode.addEventListener( "load", function() {
-        inject(livequery);
-        var scriptNode = D.createElement( "script" );
-        scriptNode.textContent = "var gm_jQuery  = jQuery.noConflict(true);\n" +
-        "(" + callback.toString() + ")(gm_jQuery);";
-        target.appendChild( scriptNode );
-    }, false );
-    target.appendChild( scriptNode );
-}
-
-
 // Injects functions into the page so they can freely interact with existing code
-https://github.com/rchern/StackExchangeScripts/blob/master/SEChatModifications.user.js#L14
+// https://github.com/rchern/StackExchangeScripts/blob/master/SEChatModifications.user.js#L14
 function inject() {
     for (var i = 0; i < arguments.length; ++i) {
         if (typeof(arguments[i]) == 'function') {
@@ -279,27 +261,20 @@ function livequery($) {
     $(function() { $.livequery.play(); });
 }
 
-/**
-* Main entry point
-* @param $ A reference to jQuery
-*/
-function main( $ ) {
+function main($) {
     // Call cleanup when message added
     // Livequery line from
     // https://github.com/rchern/StackExchangeScripts/blob/master/SEChatModifications.user.js#L334
-    $("#chat .message:not(.pending):not(.posted)").livequery(function () {
-        $(".ob-image, .ob-youtube").each(function() {
-            // get the link of the onebox and replace the displayed
-            // part with the link text
-            linkElement = $(this).children("a").first();
-            imageLink = linkElement.attr("href");
-            linkElement.text(imageLink);
-            // remove the onebox div entirely by inserting its html contents
-            // into the html of its parent
-            $(this).parent().html($(this).html());
-        });
+    $(".ob-image, .ob-youtube").livequery(function () {
+        // get the link of the onebox and replace the displayed
+        // part with the link text
+        linkElement = $(this).children("a").first();
+        imageLink = linkElement.attr("href");
+        linkElement.text(imageLink);
+        // remove the onebox div entirely by inserting its html contents
+        // into the html of its parent
+        $(this).parent().html($(this).html());
     });
 }
 
-// load jQuery and execute the main function
-addJQuery( main );
+inject(livequery, main);
