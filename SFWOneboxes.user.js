@@ -263,43 +263,46 @@ function livequery($) {
 
 function main($) {
     // Add settings dialog
-    $("#footer-legal").prepend("<a href=\"\">OneBox settings</a> |").click(function() {
-        var lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-        var settingsDialog = $("<div>" + lorem + "</div>");
-        settingsDialog.css(
-            {
-                "background-color": "#000",
-                "opacity": ".7",
-                "filter": "alpha(opacity=70)",
-                "position": "fixed",
-                "top": "25%",
-                "left": "25%",
-                "width": "50%",
-                "height": "50%",
-                "z-index": "2147483646", // need to beat default Chat elements, one of which has 999999
-                "overflow-y": "auto",
-                "overflow-x": "auto"
-            }
-        );
-        settingsDialog.addClass("popup");
-        $("body").append(settingsDialog);
+    var lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    var settingsDialog = $("<div>" + lorem + "</div>");
+    settingsDialog.css(
+        {
+            "background-color": "#000",
+            "opacity": ".7",
+            "filter": "alpha(opacity=70)",
+            "position": "fixed",
+            "top": "25%",
+            "left": "25%",
+            "width": "50%",
+            "height": "50%",
+            "z-index": "2147483646", // need to beat default Chat elements, one of which has 999999
+            "overflow-y": "auto",
+            "overflow-x": "auto"
+        }
+    );
+    settingsDialog.addClass("popup");
+    $("body").append(settingsDialog);
+    settingsDialog.hide();
+    
+    // Hide when clicked outside
+    $("html").bind("click.settingsdialog", (function() {
+        settingsDialog.hide();
+        // TODO: Confirm hide/cancellation (without saving)
+    }));
+    settingsDialog.click(function(event) {
+        event.stopPropagation();
+    });
+    
+    // TODO: Populate the dialog
+    
+    // TODO: Save values from the dialog into global vars and GM store
+    
+    // Add link to display dialog
+    var settingsLink = $("#footer-legal").prepend("<a href=\"\">OneBox settings</a> |");
+    settingsLink.click(function() {
+        settingsDialog.show();
         
-        // Remove when clicked outside
-        $("html").bind("click.settingsdialog", (function() {
-            settingsDialog.remove();
-            // TODO: Confirm removal/cancellation (without saving)
-            // TODO: Remove event binding when settingsDialog is closed.
-            //       Should be easy - just unbind the click.namespace.
-        }));
-        settingsDialog.click(function(event) {
-            event.stopPropagation();
-        });
-        
-        // TODO: Populate the dialog
-        
-        // TODO: Save values from the dialog into global vars and GM store
-        
-        // returning false so the link href is not followed
+        // Don't actually visit the link target
         return false;
     });
     
