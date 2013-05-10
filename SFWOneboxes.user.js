@@ -277,10 +277,11 @@ function main($) {
                 "width": "50%",
                 "height": "50%",
                 "z-index": "2147483646", // need to beat default Chat elements, one of which has 999999
-                "overflow-y": "scroll",
-                "overflow-x": "scroll"
+                "overflow-y": "auto",
+                "overflow-x": "auto"
             }
         );
+        settingsDialog.addClass("popup");
         $("body").append(settingsDialog);
         
         // Remove when clicked outside
