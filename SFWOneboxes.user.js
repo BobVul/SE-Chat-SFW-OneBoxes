@@ -268,8 +268,8 @@ function main($) {
     $(".ob-image, .ob-youtube").livequery(function () {
         // get the link of the onebox and replace the displayed
         // part with the link text
-        linkElement = $(this).children("a").first();
-        imageLink = linkElement.attr("href");
+        var linkElement = $(this).children("a").first();
+        var imageLink = linkElement.attr("href");
         linkElement.text(imageLink);
         // remove the onebox div entirely by inserting its html contents
         // into the html of its parent
