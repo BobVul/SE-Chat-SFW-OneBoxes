@@ -1,0 +1,20 @@
+{
+  "name"            :"SE Chat SFW OneBoxes",
+  "version"         :"1.0.0",
+  "manifest_version":2,
+  "description"     :"Prevents oneboxing of potentially NSFW items",
+  "content_scripts" :[
+    {
+      "exclude_globs"  :[],
+      "exclude_matches":[],
+      "include_globs"  :["http://chat.stackexchange.com/*"],
+      "js"             :["SFWOneboxes.user.js"],
+      "matches"        :["http://*/*", "https://*/*"],
+      "run_at"         :"document_idle"
+    }
+  ],
+  "permissions" :[
+    "http://chat.stackexchange.com/"
+  ]
+
+}
