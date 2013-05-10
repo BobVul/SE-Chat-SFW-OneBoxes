@@ -270,10 +270,41 @@ function main($) {
         // part with the link text
         var linkElement = $(this).children("a").first();
         var imageLink = linkElement.attr("href");
-        linkElement.text(imageLink);
-        // remove the onebox div entirely by inserting its html contents
-        // into the html of its parent
-        $(this).parent().html($(this).html());
+
+        // Retrieve onebox content for later use
+        var oneboxContent = linkElement.children().first();
+        // Hide the onebox content
+        oneboxContent.hide();
+        // Set some sensible CSS for the new onebox
+        oneboxContent.css(
+          {
+            "position":"absolute",
+            "z-index" :10
+          }
+        );
+
+        // Construct a new anchor element that links to the given content.
+        var newElement = $("<a>").attr("href",imageLink);
+        // Store a reference to the onebox content in the new node
+        newElement.data("onebox",oneboxContent);
+        // Set the text of the new node to the link retrieved earlier
+        newElement.text(imageLink);
+        // Append the onebox to the parent, so it will display nicely under it.
+        $(this).parent().append(oneboxContent);
+        // Replace the old link with our new anchor
+        linkElement.replaceWith(newElement);
+
+        // Set a hover listener to display the onebox dynamically
+        newElement.hover(
+          function(){
+            var oneboxContent = $(this).data("onebox");
+            oneboxContent.show();
+          },
+          function(){
+            var oneboxContent = $(this).data("onebox");
+            oneboxContent.hide();
+          }
+        );
     });
 }
 
