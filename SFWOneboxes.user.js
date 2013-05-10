@@ -280,7 +280,9 @@ function main($) {
             "overflow-x": "auto"
         }
     );
-    settingsDialog.addClass("popup");
+    // this triggers some JS when the body is clicked on, which removes the element
+    // the style is good though, so perhaps TODO: replicate it with a different class name
+    //settingsDialog.addClass("popup");
     $("body").append(settingsDialog);
     settingsDialog.hide();
     
